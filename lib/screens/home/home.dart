@@ -1,5 +1,11 @@
+import 'package:brew_crew/models/brews.dart';
+import 'package:brew_crew/screens/home/brew_list.dart';
+import 'package:brew_crew/screens/home/setting_form.dart';
 import 'package:brew_crew/services/auth.dart';
+import 'package:brew_crew/services/database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -12,7 +18,18 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    
+    void _showSettingsPanel() {
+      showModalBottomSheet(context: context, builder: (context) {
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+          child: SettingsForm(),
+        );
+      });
+    }
+    
+    return StreamProvider<List<Brew>>.value(
+      value: DatabaseService().brews,
       child: Scaffold(
         backgroundColor: Colors.brown[50],
         appBar: AppBar(
@@ -26,8 +43,24 @@ class _HomeState extends State<Home> {
               },
               icon: Icon(Icons.person),
               label: Text("logout"),
+            ),
+            FlatButton.icon(
+              onPressed: () async {
+                await _showSettingsPanel();
+              },
+              icon: Icon(Icons.settings),
+              label: Text("Settings"),
             )
           ],
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/bg.png'),
+              fit: BoxFit.cover
+            )
+          ),
+            child: BrewList(),
         ),
       ),
     );

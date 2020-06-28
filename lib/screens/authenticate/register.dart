@@ -3,16 +3,16 @@ import 'package:brew_crew/shared/constants.dart';
 import 'package:brew_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatefulWidget {
+class Register extends StatefulWidget {
   final Function toggleView;
 
-  const SignIn({Key key, this.toggleView}) : super(key: key);
+  const Register({Key key, this.toggleView}) : super(key: key);
 
   @override
-  _SignInState createState() => _SignInState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   var loading = false;
@@ -29,7 +29,7 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
-        title: Text('Sign in to Brew Crew'),
+        title: Text('Sign Up to Brew Crew'),
         actions: <Widget>[
           FlatButton.icon(
             onPressed: () {
@@ -42,18 +42,6 @@ class _SignInState extends State<SignIn> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-//        child: RaisedButton(
-//          child: Text('Sign in anon'),
-//          onPressed: () async {
-//            dynamic result = await _auth.signInAnon();
-//            if(result == null) {
-//              print('error signing in');
-//            } else {
-//              print('signed in');
-//              print(result.uid);
-//            }
-//          },
-//        ),
         child: Form(
           key: _formKey,
           child: Column(
@@ -84,7 +72,7 @@ class _SignInState extends State<SignIn> {
               RaisedButton(
                 color: Colors.pink[400],
                 child: Text(
-                  "Sing in",
+                  "Sing up",
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
@@ -92,11 +80,11 @@ class _SignInState extends State<SignIn> {
                     setState(() {
                       loading = true;
                     });
-                    dynamic result =
-                        await _auth.singInWithEmailAndPassword(email, password);
+                    dynamic result = await _auth.registerWithEmailAndPassword(
+                        email, password);
                     if (result == null) {
                       setState(() {
-                        error = "could not sign in with those credentials";
+                        error = "please supply avlid email";
                         loading = false;
                       });
                     }
